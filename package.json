@@ -24,7 +24,9 @@
   "homepage": "https://github.com/okey222k/trello-clone-api#readme",
   "dependencies": {
     "@babel/runtime": "^7.17.2",
-    "express": "^4.17.3"
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongodb": "^3.6.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",

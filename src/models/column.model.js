@@ -5,7 +5,7 @@ import { getDB } from "../config/mongodb";
 const ColumnCollectionName = "columns";
 const ColumnCollectionSchema = Joi.object({
   boardId: Joi.string().required(),
-  title: Joi.string().required().min(3).max(20),
+  title: Joi.string().required().min(3).max(20).trim(),
   cardOrder: Joi.array().items(Joi.string()).default([]),
   createdAt: Joi.date().timestamp().default(Date.now),
   updatedAt: Joi.date().timestamp().default(null),
@@ -20,12 +20,10 @@ const validationSchema = async (data) => {
 
 const createNewColumn = async (data) => {
   try {
-    console.log(data);
     const value = await validationSchema(data);
     const result = await getDB()
       .collection(ColumnCollectionName)
       .insertOne(value);
-    console.log(result);
     return result.ops[0];
   } catch (error) {
     throw new Error(error);

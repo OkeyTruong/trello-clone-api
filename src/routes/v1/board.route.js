@@ -4,7 +4,8 @@ import { BoardControllers } from "*/controllers/board.controller";
 
 const router = express.Router();
 
-router.route("/")
-    .post(BoardValidations.createNewBoard, BoardControllers.createNewBoard)
+router
+  .route("/")
+  .post(BoardValidations.createNewBoard, BoardControllers.createNewBoard);
 
-export const BoardRoutes = router
+export const BoardRoutes = router;

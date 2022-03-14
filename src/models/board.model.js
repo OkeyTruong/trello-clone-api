@@ -27,7 +27,7 @@ const createNewBoard = async (data) => {
       .insertOne(value);
     return result.ops
   } catch (error) {
-    console.log(error);
+    throw new Error(error)
   }
 };
 

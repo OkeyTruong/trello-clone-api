@@ -9,4 +9,12 @@ const createNewBoard = async(data)=>{
     }
 }
 
-export const BoardServices = { createNewBoard }
+const getFullBoard = async(boardId)=>{
+    try {
+        const result = await BoardModel.getFullBoard(boardId)
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+export const BoardServices = { createNewBoard,getFullBoard }

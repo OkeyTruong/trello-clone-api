@@ -8,4 +8,6 @@ router
   .route("/")
   .post(BoardValidations.createNewBoard, BoardControllers.createNewBoard);
 
+router.route("/:id")
+  .get(BoardControllers.getFullBoard)
 export const BoardRoutes = router;

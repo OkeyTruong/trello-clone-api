@@ -6,10 +6,21 @@ const createNewBoard = async (req, res) => {
     const result = await BoardServices.createNewBoard(req.body);
     res.status(HttpStatusCode.OK).json(result);
   } catch (error) {
-    console.log("controller",error);
+    console.log("controller", error);
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
       error: error.message,
     });
   }
 };
-export const BoardControllers = { createNewBoard };
+
+const getFullBoard = async (req, res) => {
+  try {
+    const result = await BoardServices.getFullBoard(req.params.id);
+    res.status(HttpStatusCode.OK).json(result);
+  } catch (error) {
+    res.status(HttpStatusCode.INTERNAL_SERVER).json({
+      error: error.message,
+    });
+  }
+};
+export const BoardControllers = { createNewBoard, getFullBoard };

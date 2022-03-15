@@ -34,14 +34,27 @@ const createNewBoard = async (data) => {
   }
 };
 
+const pushColumnOrder = async (boardId, columnId) => {
+  try{
+    const result = await getDB()
+      .collection(BoardCollectionName)
+      .findOneAndUpdate(
+        {_id:ObjectID(boardId)},
+        {$push:{columnOrder:columnId}},
+        {returnOriginal:false}
+      )
+      return result.value;
+  }catch(error){
+    throw new Error(error)
+  }
+
+};
 const getFullBoard = async (boardId) => {
   try {
     const result = await getDB()
       .collection(BoardCollectionName)
       .aggregate([
-        { $match: 
-          { _id: ObjectID(boardId) }
-        },
+        { $match: { _id: ObjectID(boardId) } },
         {
           $lookup: {
             from: ColumnModel.ColumnCollectionName,
@@ -60,11 +73,11 @@ const getFullBoard = async (boardId) => {
         },
       ])
       .toArray();
-    return result[0]||{};
+    return result[0] || {};
   } catch (error) {
     throw new Error(error);
   }
 };
 
 // export
-export const BoardModel = { createNewBoard, getFullBoard };
+export const BoardModel = { createNewBoard, getFullBoard, pushColumnOrder };

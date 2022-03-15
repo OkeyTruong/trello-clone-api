@@ -1,9 +1,13 @@
 import { CardModel } from "../models/card.model";
+import { ColumnModel } from "../models/column.model";
 
 const createNewCard = async (data) => {
   try {
-    const result = await CardModel.createNewCard(data);
-    return result;
+    const newCard = await CardModel.createNewCard(data);
+
+    const { columnId, _id:newCardId } = newCard;
+    const result = await ColumnModel.pushCardOrder(columnId,newCardId)
+    return newCard;
   } catch (error) {
     throw new Error(error);
   }
@@ -29,5 +33,5 @@ const deleteCard = async (id) => {
   } catch (error) {
     throw new Error(error);
   }
-}
-export const CardService = { createNewCard, updatedCard,deleteCard };
+};
+export const CardService = { createNewCard, updatedCard, deleteCard };

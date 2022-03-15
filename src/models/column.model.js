@@ -35,6 +35,22 @@ const createNewColumn = async (data) => {
   }
 };
 
+const pushCardOrder = async(columnId, newCardId)=>{
+  try {
+    const result = await getDB()
+      .collection(ColumnCollectionName)
+      .findOneAndUpdate(
+        {_id:ObjectID(columnId)},
+        {$push:{cardOrder:newCardId}},
+        {returnOriginal:false}
+      )
+      
+      return result.value;
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
 const updateColumn = async (id, data) => {
   try {
     const result = await getDB()
@@ -64,5 +80,6 @@ export const ColumnModel = {
   createNewColumn,
   updateColumn,
   deleteColumn,
-  ColumnCollectionName
+  ColumnCollectionName,
+  pushCardOrder
 };

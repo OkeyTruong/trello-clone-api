@@ -2,6 +2,7 @@ import Joi from "joi";
 import { getDB } from "*/config/mongodb";
 import { ObjectID } from "mongodb";
 import { ColumnModel } from "./column.model";
+import { CardModel } from "./card.model";
 
 // Define Board collection
 const BoardCollectionName = "boards";
@@ -39,12 +40,7 @@ const getFullBoard = async (boardId) => {
       .collection(BoardCollectionName)
       .aggregate([
         { $match: 
-          { _id: ObjectID(boardId) } 
-        },
-        {
-          $addFields: {
-            _id: { $toString: "$_id" },
-          },
+          { _id: ObjectID(boardId) }
         },
         {
           $lookup: {
@@ -54,9 +50,17 @@ const getFullBoard = async (boardId) => {
             as: "columnsArray",
           },
         },
+        {
+          $lookup: {
+            from: CardModel.CardCollectionName,
+            localField: "_id",
+            foreignField: "boardId",
+            as: "cardsArray",
+          },
+        },
       ])
       .toArray();
-    return result;
+    return result[0]||{};
   } catch (error) {
     throw new Error(error);
   }

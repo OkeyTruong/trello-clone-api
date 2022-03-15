@@ -19,10 +19,16 @@ const validateSchema = async (data) => {
 
 const createNewCard = async (data) => {
   try {
-    const value = await validateSchema(data);
+    const validatedValue = await validateSchema(data);
+    const insertValue = {
+      ...validatedValue,
+      boardId: ObjectID(validatedValue.boardId),
+      columnId: ObjectID(validatedValue.columnId),
+    };
     const result = await getDB()
       .collection(CardCollectionName)
-      .insertOne(value);
+      .insertOne(insertValue);
+
     return result.ops[0];
   } catch (error) {
     throw new Error(error);
@@ -48,13 +54,15 @@ const deleteCard = async (id) => {
   try {
     const result = await getDB()
       .collection(CardCollectionName)
-      .findOneAndDelete(
-        { _id: ObjectID(id) },
-        { $set: { _destroy: true } },
-      );
+      .findOneAndDelete({ _id: ObjectID(id) }, { $set: { _destroy: true } });
     return result.value;
   } catch (error) {
     throw new Error(error);
   }
-}
-export const CardModel = { createNewCard, updatedCard,deleteCard };
+};
+export const CardModel = {
+  createNewCard,
+  updatedCard,
+  deleteCard,
+  CardCollectionName,
+};

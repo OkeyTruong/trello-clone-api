@@ -20,10 +20,15 @@ const validationSchema = async (data) => {
 
 const createNewColumn = async (data) => {
   try {
-    const value = await validationSchema(data);
+    const validatedValue = await validationSchema(data);
+    const insertValue = {
+      ...validatedValue,
+      boardId: ObjectID(validatedValue.boardId),
+    };
     const result = await getDB()
       .collection(ColumnCollectionName)
-      .insertOne(value);
+      .insertOne(insertValue);
+
     return result.ops[0];
   } catch (error) {
     throw new Error(error);
@@ -59,4 +64,5 @@ export const ColumnModel = {
   createNewColumn,
   updateColumn,
   deleteColumn,
+  ColumnCollectionName
 };
